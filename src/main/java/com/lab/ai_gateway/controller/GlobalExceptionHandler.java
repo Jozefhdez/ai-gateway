@@ -1,5 +1,6 @@
 package com.lab.ai_gateway.controller;
 
+import com.lab.ai_gateway.service.RateLimitException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -22,5 +23,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleGeneral(Exception ex) {
         return ResponseEntity.internalServerError()
                 .body("{ \"error\": \"" + ex.getMessage() + "\" }");
+    }
+
+    @ExceptionHandler(RateLimitException.class)
+    public ResponseEntity<String> handleRateLimit(RateLimitException ex) {
+        return ResponseEntity.status(429).body("{ \"error\": \"" + ex.getMessage() + "\" }");
     }
 }

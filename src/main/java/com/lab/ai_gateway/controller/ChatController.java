@@ -23,6 +23,12 @@ public class ChatController {
         return ResponseEntity.ok("{ \"status\": \"UP\" }");
     }
 
+    @GetMapping("/models")
+    public ResponseEntity<String[]> getModels() {
+        String[] models = {"llama3", "mistral", "phi3"};
+        return ResponseEntity.ok(models);
+    }
+
     @PostMapping
     public Mono<ResponseEntity<ChatResponse>> sendMessage(@Valid @RequestBody ChatRequest request) {
         return chatService.chat(request)
