@@ -16,28 +16,19 @@ public class ChatService {
     @Value("${ai.engine.model}")
     private String defaultModel;
 
-    // TODO 1: Inyección por constructor
     public ChatService(OllamaClient ollamaClient) {
         this.ollamaClient = ollamaClient;
     }
 
-    /**
-     * Procesa la petición y devuelve la respuesta de la IA.
-     */
     public Mono<ChatResponse> chat(ChatRequest request) {
         long start = System.currentTimeMillis();
 
-        // TODO 2: Lógica para elegir el modelo
-        // Si el usuario no manda un modelo, usamos el default del application.properties
         String model = (request.model() != null && !request.model().isBlank())
                 ? request.model()
                 : defaultModel;
 
-        // TODO 3: Crear el OllamaRequest
-        // Ponemos stream en false para que sea una respuesta única y no por pedazos
         OllamaRequest ollamaRequest = new OllamaRequest(model, request.prompt(), false);
 
-        // TODO 4: Llamar al cliente y transformar la respuesta
         return ollamaClient.generate(ollamaRequest)
                 .map(responseText -> {
                     long durationMs = System.currentTimeMillis() - start;

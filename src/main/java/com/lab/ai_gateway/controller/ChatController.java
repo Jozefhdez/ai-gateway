@@ -14,18 +14,15 @@ public class ChatController {
 
     private final ChatService chatService;
 
-    // TODO A: Inyección por constructor
     public ChatController(ChatService chatService) {
         this.chatService = chatService;
     }
 
-    // TODO B: Health check endpoint
     @GetMapping("/health")
     public ResponseEntity<String> health() {
         return ResponseEntity.ok("{ \"status\": \"UP\" }");
     }
 
-    // TODO C: El endpoint principal POST
     @PostMapping
     public Mono<ResponseEntity<ChatResponse>> sendMessage(@Valid @RequestBody ChatRequest request) {
         return chatService.chat(request)
